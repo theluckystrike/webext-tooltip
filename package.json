@@ -1,0 +1,36 @@
+{
+    "name": "webext-tooltip",
+    "version": "0.1.0",
+    "description": "Tooltip component for Chrome extensions — hover tooltips, positioned tooltips, rich content, delayed show, and custom styling for MV3.",
+    "author": "Zovo <hello@zovo.one>",
+    "license": "MIT",
+    "keywords": [
+        "chrome-extension",
+        "tooltip",
+        "hover",
+        "popover",
+        "ui-component",
+        "manifest-v3",
+        "browser-extension",
+        "hint"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/theluckystrike/webext-tooltip.git"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "devDependencies": {
+        "@types/chrome": "^0.0.260",
+        "typescript": "^5.3.3"
+    }
+}
