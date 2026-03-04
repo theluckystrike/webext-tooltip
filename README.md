@@ -1,144 +1,70 @@
-# webext-tooltip — Tooltip Component for Extensions
+# webext-tooltip
 
-[![npm version](https://img.shields.io/npm/v/webext-tooltip)](https://npmjs.com/package/webext-tooltip)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
-[![Chrome Web Extension](https://img.shields.io/badge/Chrome-Web%20Extension-orange.svg)](https://developer.chrome.com/docs/extensions/)
-[![CI Status](https://github.com/theluckystrike/webext-tooltip/actions/workflows/ci.yml/badge.svg)](https://github.com/theluckystrike/webext-tooltip/actions)
-[![Discord](https://img.shields.io/badge/Discord-Zovo-blueviolet.svg?logo=discord)](https://discord.gg/zovo)
-[![Website](https://img.shields.io/badge/Website-zovo.one-blue)](https://zovo.one)
-[![GitHub Stars](https://img.shields.io/github/stars/theluckystrike/webext-tooltip?style=social)](https://github.com/theluckystrike/webext-tooltip)
+> Tooltip component for Chrome extensions -- hover tooltips, positioned tooltips, rich content, delayed show, and custom styling for MV3.
 
-> Positioned tooltips with hover attach, flash display, and dark theme.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**webext-tooltip** is a lightweight tooltip component for Chrome extensions. Show contextual information on hover, flash temporary messages, and customize appearance with dark theme support.
-
-Part of the [Zovo](https://zovo.one) developer tools family.
-
-## Features
-
-- ✅ **Auto Positioning** - Smart placement (top, bottom, left, right)
-- ✅ **Hover Attach** - Attach to any element via CSS selector
-- ✅ **Flash Messages** - Temporary toast-style messages
-- ✅ **Dark Theme** - Built-in dark theme support
-- ✅ **TypeScript Support** - Full type definitions included
-
-## Installation
+## Install
 
 ```bash
 npm install webext-tooltip
 ```
 
-## Quick Start
+## Usage
 
 ```typescript
 import { Tooltip } from 'webext-tooltip';
 
-// Attach tooltips to elements with data-tooltip attribute
-Tooltip.attach('[data-tooltip]');
+// Show a tooltip above an element
+const button = document.getElementById('my-button')!;
+Tooltip.show(button, 'Click to save', 'top');
 
-// Flash a message
+// Hide the active tooltip
+Tooltip.hide();
+
+// Automatically attach hover tooltips using a data attribute
+// <button data-tooltip="Save changes">Save</button>
+Tooltip.attach('[data-tooltip]', 'data-tooltip', 'bottom');
+
+// Flash a tooltip for a limited duration (auto-hides after 2 seconds)
 Tooltip.flash(button, 'Saved!', 2000);
-```
-
-## Usage Examples
-
-### Basic Tooltip
-
-```html
-<button data-tooltip="Click to save">Save</button>
-```
-
-```typescript
-Tooltip.attach('[data-tooltip]');
-```
-
-### Custom Tooltip Content
-
-```typescript
-Tooltip.attach('.help-icon', {
-  position: 'right',
-  theme: 'dark',
-});
-```
-
-### Flash Message
-
-```typescript
-// Flash a success message
-Tooltip.flash(saveButton, 'Settings saved!', 2000);
-
-// Flash with custom styling
-Tooltip.flash(deleteButton, 'Item deleted', 1500, {
-  theme: 'error',
-});
-```
-
-### Programmatic Tooltip
-
-```typescript
-Tooltip.show(element, 'Custom message', {
-  position: 'bottom',
-  duration: 3000,
-});
 ```
 
 ## API
 
-### Tooltip Methods
+### `Tooltip` (class)
 
-| Method | Description |
-|--------|-------------|
-| `Tooltip.attach(selector, options?)` | Attach tooltips to matching elements |
-| `Tooltip.show(element, message, options?)` | Show tooltip on element |
-| `Tooltip.hide()` | Hide current tooltip |
-| `Tooltip.flash(element, message, duration?)` | Flash a temporary message |
+All methods are **static** -- there is no need to instantiate the class.
 
-### Options
+#### `static show(anchor: HTMLElement, text: string, position?: 'top' | 'bottom' | 'left' | 'right'): HTMLElement`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| position | string | 'top' | Tooltip position |
-| theme | string | 'light' | Theme: 'light' or 'dark' |
-| duration | number | -1 | Auto-dismiss duration (ms) |
+Displays a tooltip positioned relative to the anchor element. Any previously visible tooltip is hidden first.
 
-## Contributing
+- **anchor** (`HTMLElement`) -- The element to position the tooltip near.
+- **text** (`string`) -- The tooltip text content.
+- **position** (`'top' | 'bottom' | 'left' | 'right'`, default `'top'`) -- Where to place the tooltip relative to the anchor.
+- **Returns** `HTMLElement` -- The tooltip DOM element.
 
-Contributions are welcome! Please follow these steps:
+#### `static hide(): void`
 
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/tooltip-feature`
-3. **Make** your changes
-4. **Test** your changes: `npm test`
-5. **Commit** your changes: `git commit -m 'Add new feature'`
-6. **Push** to the branch: `git push origin feature/tooltip-feature`
-7. **Submit** a Pull Request
+Removes the currently active tooltip from the DOM, if any.
 
-## Built by Zovo
+#### `static attach(selector: string, textAttr?: string, position?: 'top' | 'bottom'): void`
 
-Part of the [Zovo](https://zovo.one) developer tools family — privacy-first Chrome extensions built by developers, for developers.
+Attaches mouseenter/mouseleave listeners to all elements matching the selector, showing tooltips on hover.
 
-## See Also
+- **selector** (`string`) -- A CSS selector for target elements.
+- **textAttr** (`string`, default `'data-tooltip'`) -- The attribute name to read tooltip text from.
+- **position** (`'top' | 'bottom'`, default `'top'`) -- Tooltip placement direction.
 
-### Related Zovo Repositories
+#### `static flash(anchor: HTMLElement, text: string, durationMs?: number): void`
 
-- [webext-toast-notifications](https://github.com/theluckystrike/webext-toast-notifications) - Toast notifications
-- [webext-quick-settings](https://github.com/theluckystrike/webext-quick-settings) - Settings panel
-- [webext-element-picker](https://github.com/theluckystrike/webext-element-picker) - Element selector
-- [chrome-extension-starter-mv3](https://github.com/theluckystrike/chrome-extension-starter-mv3) - Extension template
+Shows a tooltip and automatically hides it after the specified duration.
 
-### Zovo Chrome Extensions
-
-- [Zovo Tab Manager](https://chrome.google.com/webstore/detail/zovo-tab-manager) - Manage tabs efficiently
-- [Zovo Focus](https://chrome.google.com/webstore/detail/zovo-focus) - Block distractions
-- [Zovo Permissions Scanner](https://chrome.google.com/webstore/detail/zovo-permissions-scanner) - Check extension privacy grades
-
-Visit [zovo.one](https://zovo.one) for more information.
+- **anchor** (`HTMLElement`) -- The element to position the tooltip near.
+- **text** (`string`) -- The tooltip text content.
+- **durationMs** (`number`, default `2000`) -- Milliseconds before auto-hide.
 
 ## License
 
-MIT — [Zovo](https://zovo.one)
-
----
-
-*Built by developers, for developers. No compromises on privacy.*
+MIT
