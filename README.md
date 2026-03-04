@@ -9,6 +9,8 @@
 
 > Tooltip component for Chrome extensions -- hover tooltips, positioned tooltips, rich content, delayed show, and custom styling for MV3.
 
+Part of the [Zovo](https://zovo.one) developer tools family.
+
 ## Install
 
 ```bash
